@@ -1,4 +1,5 @@
-0VERSOIN. 20191224 - added OHLeak as parameter for dataset 191111
+VERSION. 20190208 - Implemeted Git version control system
+VERSION. 20191224 - added OHLeak as parameter for dataset 191111
 VERSION. 20191223_released -  edited comments and robustness ver20191206
 VERSION. 20191206 - Object-Oriented Refactory. MATLAB VER.2018a
 VERSION. 20191101 - Refactory
