@@ -9,6 +9,7 @@
 % v20191206 - written
 % v20191223_released - fix runtime error when there is no ID to be removed
 % v20191224: return ref_pos from signalAlign function and plot a line at the timing of alignment 
+% v20190208: change the ref_pos as the max within time_frame
 
 clear;clc
 
@@ -43,7 +44,7 @@ newsample = rmvSample(sample, id_rmv) ;
 
 if isAligned == true
     disp '=======ALIGNING SIGNAL======'
-    [newsample, ref_pos] = signalAlign(newsample, ref_vindx, rise, targetFrame) ;
+    [newsample, ref_pos, pd, indx_rise] = signalAlign(newsample, ref_vindx, rise, targetFrame) ;
 end
 
 %% rescaling

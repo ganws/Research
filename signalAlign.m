@@ -4,13 +4,14 @@
 % ver20191101
 % ver20191206: modified into function for class Shot. 
 % ver20191224: now returns ref_sample and ref_pos
+% ver20190208: added 'pd' as return parameter
 
 %% SETTINGS
 %clear, clc 
 
 %load raw_191111.mat
 
-function [newShotObj, ref_pos] = signalAlign (shotObj, varIndx, rise, targetframe)
+function [newShotObj, ref_pos, pd, indx_rise] = signalAlign (shotObj, varIndx, rise, targetframe)
     %initialize variable
     R1 = targetframe(1);
     R2 = targetframe(2);
@@ -23,6 +24,7 @@ function [newShotObj, ref_pos] = signalAlign (shotObj, varIndx, rise, targetfram
     %% find signal rise index
     findRise = @(x) findSignalRise(shotObj(x).var{1}, rise, targetframe);
     indx_rise = arrayfun(findRise, 1:nSample);
+    [~, pd] = arrayfun(findRise, 1:nSample, 'UniformOutput', false);
     [ref_pos, ref_sample] = min(indx_rise);
 
     findLen = @(x) length(shotObj(x).var{varIndx}) ;
