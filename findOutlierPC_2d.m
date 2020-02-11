@@ -22,7 +22,7 @@ elseif (numel(pcCombo)<2)
     error('You need more principal components');
 end
 
-if (~(mode==1 | mode==2))
+if (~(mode==1 || mode==2))
     error('Mode can only be 1 or 2');
 end
 
@@ -53,10 +53,10 @@ for i = 1:numel(classLabel) %iterate for class
     
         if (mode==1)
             class_mean = mean(Dk(:, indx_class{i}), 2);
-            if(i==1) fprintf('Mode = %d: the center of dataset is represented by the mean\n', mode); end
+            if(i==1), fprintf('Mode = %d: the center of dataset is represented by the mean\n', mode); end
         elseif (mode==2)
             class_mean = median(Dk(:, indx_class{i}), 2);
-            if(i==1) fprintf('Mode = %d: The center of dataset is represented by the median\n', mode); end
+            if(i==1), fprintf('Mode = %d: The center of dataset is represented by the median\n', mode); end
         end
         class_std = std(Dk(:, indx_class{i}), 0, 2);
         class_threshold = norm(sd_threshold*class_std);
