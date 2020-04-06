@@ -30,7 +30,7 @@ function [newShotObj, ref_pos, pd, indx_rise] = signalAlign (shotObj, varIndx, r
     findLen = @(x) length(shotObj(x).var{varIndx}) ;
     sigLen = arrayfun(findLen, 1:nSample);
 
-    fprintf('Reference signal rise ID: %s, with signal rise time: %f [s] \n', shotObj(ref_sample).ID, shotObj(ref_sample).var{varIndx}(ref_pos));
+    fprintf('Reference signal rise ID: %s, with signal rise velocty: %f [s] \n', shotObj(ref_sample).ID, shotObj(ref_sample).var{varIndx}(ref_pos));
 
     %% Alignment
 

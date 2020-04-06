@@ -46,7 +46,7 @@ newsample = rmvSample(sample, id_rmv) ;
 if (isAligned == true)
     disp '=======ALIGNING SIGNAL======'
     [newsample, ref_pos, pd, indx_rise] = signalAlign(newsample, ref_vindx, rise, targetFrame) ;
-    %[newsample, ref_pos, pd, indx_rise] = signalAlign_v2(newsample, ref_vindx, rise, targetFrame) ;
+%     [newsample, ref_pos, pd, indx_rise] = signalAlign_v2(newsample, ref_vindx, rise, targetFrame) ;
 end
 
 %% rescaling
