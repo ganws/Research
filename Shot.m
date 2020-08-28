@@ -39,7 +39,7 @@ methods
             
             if timeAxisPlot == true %plot with time axis
                 tAxis = 0:dt:dt*(shotObj(i).Len-1); %create time axis
-                plot(tAxis, shotObj(i).var{varindx}, class_color, 'DisplayName', shotObj(i).ID) 
+                plot(shotObj(i).t_indx, shotObj(i).var{varindx}, class_color, 'DisplayName', shotObj(i).ID) 
                 xlabel('Time [s]');
             else %plot with data points
                 plot(shotObj(i).var{varindx}, class_color,'DisplayName', shotObj(i).ID)
