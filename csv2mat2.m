@@ -48,23 +48,23 @@ sample(nCSV) = Shot ; %preallocation
 for k = 1:nCSV 
     temp = fullfile(dir,samples{k});        
     opts = detectImportOptions(temp);
-    opts.SelectedVariableNames = opts.VariableNames([pt_col, t_col,VarCol]); % select variables to import
+%     opts.SelectedVariableNames = opts.VariableNames([pt_col, t_col,VarCol]); % select variables to import
     opts.VariableUnitsLine = 2;
     csv = readtable(temp,opts);
-    pt  = table2cell(csv(:,1));
-    csv = table2array(csv(:, 2:end));  %Convert table into cell 
+%     pt  = table2cell(csv(:,1));
+%     csv = table2array(csv(:, 2:end));  %Convert table into cell 
     
     sample(k).ID = erase(samples{k}, '.csv'); % sample ID
-    sample(k).isNaN = sum(sum(isnan(csv))); % NaN data points
-    sample(k).isInf = sum(sum(isinf(csv))); %Inf data points
-    sample(k).Len = size(csv,t_col); %original time series length
-    sample(k).t_indx = csv(:,t_col); %time indx
-    sample(k).PT = pt;
+    sample(k).isNaN = sum(sum(isnan(csv{:, VarCol}))); % NaN data points
+    sample(k).isInf = sum(sum(isinf(csv{:, VarCol}))); %Inf data points
+    sample(k).Len = length(csv{:, t_col}); %original time series length
+    sample(k).t_indx = csv{:,t_col}; %time indx
+    sample(k).PT = csv{:, pt_col};
     sample(k).varName = varName;
     sample(k).varUnit = varUnit;
     
     for j = 1:nVar
-        sample(k).var{j} = csv(:,j+1); %load sensor data vector, offset 1 because 1st col is set as time vector
+        sample(k).var{j} = csv{:,VarCol(j)}; %load sensor data vector, offset 1 because 1st col is set as time vector
     end
     
     %calculate area under curve of velocity-time graph
