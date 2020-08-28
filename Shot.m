@@ -4,10 +4,12 @@ classdef Shot
 % v20191206: written
 % v20191223_released: removed 'Defect' property
 % v20191224: added OHleak, total flow volume as parameter in property.
+% v20200828: added PT parameter
     
     properties
         ID
         class
+        PT
         t_indx
         var
         Len

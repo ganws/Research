@@ -10,34 +10,35 @@
 % ver20191224:  - include OHleak parameter to samples.
 %                       - change 'class' from string to char
 %                       - include total flow volume(flow_vol) as area under velocity-time graph parameter to samples
-%% SETTINGS  <===== CHANGE HERE
+
 clear;clc;
+%% SETTINGS  <===== CHANGE HERE
 
 % file name and pathing
-dir = '..\Raw_data\dataset_191111\vectorCSV';  %directory of raw data files
-dataset = '191111'; 
-load paramTable_191111.mat ; %load labels
+dir = '..\Raw_data\dataset_200826\vectorCSV';  %directory of raw data files
+dataset = '200826'; 
+load paramTable_200826.mat ; %load labels
 
-% Select variables [col] in CSV file.
+% specify variable info etc in CSV files.
 
-t_col = 1; % time vector column;
-VarCol = 2:9; %for datasets recorded CAST-TREND systems (ie 171120)
-nVar = length(VarCol); %num of process var
+t_col = 4; % specify time vector column in csv;
+pt_col = 1; % specify recording type (P or T) column
+VarCol = [3, 5, 8:10]; % specify pro5cess data columns
+varName = {'Stroke', 'Velocity', 'Head Pressure', 'Rod Pressure', 'Vacuum Level'}; % Corresponding process variable names.
+varUnit = {'mm', 'm/s', 'MPa', 'MPa', 'Mpa'}; % Corresponding units
 
-% Appropriate process variable names.
-varName = {'Velocity', 'Head Pressure', 'Rod Pressure', 'Metal Pressure', 'Stroke', 'Valve Opening Instruction', 'Valve Opening', 'Vacuum Level'};
-
-% Units for all the variables to be extracted from the csv file
-varUnit = {'m/s', 'MPa', 'MPa', 'MPa', 'mm', 'mm', 'mm', 'kPa'};
-
-defectLabel = 4; %select the column in paramTab for class labellling (for 191111 -> Defect)
-OHleakCol = 3;% OHleak column
+% specify settings in label_info excel file.
+csvFileName = paramTab.ShotNumber; % csv file names
+defectLabel = 2; % class labellling column num(for 191111 -> Defect)
+OHleakCol = 3;% OHleak column num
 %%  Readtable from csv data
 % the variables are selected through modifying ImportOptions for table
+
 fprintf('Loading data from %s... \n', dir);
 
 tStart = tic; %start timer
 
+nVar = length(VarCol); %num of process var
 samples = listFile(dir); %list individual sample csv file name
 nCSV = length(samples); %number of samples per class
 %sample(nCSV) = struct('ID', '', 'isNaN', 0, 'isInf', 0, 'Len', 0, 'OHResult', 0, 'Defect', '', 'DefectCode', 0) ;%preallocation
@@ -47,16 +48,18 @@ sample(nCSV) = Shot ; %preallocation
 for k = 1:nCSV 
     temp = fullfile(dir,samples{k});        
     opts = detectImportOptions(temp);
-    opts.SelectedVariableNames = opts.VariableNames([t_col,VarCol]); % select variables to import
+    opts.SelectedVariableNames = opts.VariableNames([pt_col, t_col,VarCol]); % select variables to import
     opts.VariableUnitsLine = 2;
     csv = readtable(temp,opts);
-    csv = table2array(csv);  %Convert table into cell 
+    pt  = table2cell(csv(:,1));
+    csv = table2array(csv(:, 2:end));  %Convert table into cell 
     
     sample(k).ID = erase(samples{k}, '.csv'); % sample ID
     sample(k).isNaN = sum(sum(isnan(csv))); % NaN data points
     sample(k).isInf = sum(sum(isinf(csv))); %Inf data points
     sample(k).Len = size(csv,t_col); %original time series length
     sample(k).t_indx = csv(:,t_col); %time indx
+    sample(k).PT = pt;
     sample(k).varName = varName;
     sample(k).varUnit = varUnit;
     
@@ -76,11 +79,16 @@ fprintf('Inf data points detected: %d \n', sum([sample.isInf]));
 
 csvData = erase(samples, '.csv');
 
+% convert ID to string if necessary
+if isnumeric(csvFileName(1))
+    csvFileName = cellstr(num2str(csvFileName));
+end
+
 % identiy csv that do not have labels
-[hasLabel, csv2lbl_ind] = ismember(csvData, [paramTab.ID]);
+[hasLabel, csv2lbl_ind] = ismember(csvData, csvFileName);
     
 % identify id that do not have csv data file.
-[hasCSV, indx] = ismember([paramTab.ID], csvData);
+[hasCSV, indx] = ismember(csvFileName, csvData);
 
 % identify repeated ID
 [n,bin] = histcounts(indx, unique(indx));

@@ -8,8 +8,8 @@
 
 clear, clc
 
-fname = '..\Raw_data\dataset_191111\label_info_released(191223 modified).xlsx' ;  %file name
-matfname = 'paramTable_191111'; % new .mat file to be created
+fname = '..\Raw_data\dataset_200826\label_info.xlsx' ;  %file name
+matfname = 'paramTable_200826'; % new .mat file to be created
 
 % Import table
 opts = detectImportOptions(fname); 
