@@ -52,8 +52,6 @@ methods
 
     end
 end
-            
-    
-    
+  
 end
 

@@ -16,9 +16,9 @@ clear;clc
 
 %% SETTING <<==== CHANGE HERE
 
-load raw_191111.mat
-newmatname = 'rsal_191111.mat';
-id_rmv = {'717201', '7003E1', 'F08370', '60A2C0'}; %ID to be removed %F08370
+load resampled_linear_200826.mat
+newmatname = 'rsal_200826.mat';
+id_rmv = {}; %ID to be removed %F08370
 
 %select preprocess (true=yes, false=no)
 isAligned = true; %signal alignment 
@@ -26,8 +26,8 @@ isScaled = true; %rescaling
 
 %===signal alignment paramter===
 ref_vindx = 1; %align variable index
-rise = 10; %rise percentage [%]
-targetFrame = [900, 1000]; % frame to be examined for signal rise
+rise = 5; %rise percentage [%]
+targetFrame = [1e4, 3e4]; % frame to be examined for signal rise
 
 %===rescale parameter========
 newRange = [0,1]; % new range, [lower bound, upper bound]
