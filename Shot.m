@@ -5,20 +5,25 @@ classdef Shot
 % v20191223_released: removed 'Defect' property
 % v20191224: added OHleak, total flow volume as parameter in property.
 % v20200828: added PT parameter
+% v20200909: Len as dependent property
     
     properties
         ID
         class
         PT
         t_indx
+        t_indx_old
         var
-        Len
         isNaN
         isInf
         varName
         varUnit
         OHleak
         flow_vol
+    end
+    
+    properties (Dependent)
+        Len
     end
 
 methods
@@ -50,6 +55,10 @@ methods
         end
     hold off
 
+    end
+    
+    function len = get.Len(obj)
+        len = length(obj.var{1});
     end
 end
   
